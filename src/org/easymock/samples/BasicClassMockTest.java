@@ -16,6 +16,9 @@
 
 package org.easymock.samples;
 
+import static org.easymock.EasyMock.expect;
+
+import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
@@ -52,6 +55,11 @@ public class BasicClassMockTest extends EasyMockSupport {
         public void print() {
             printer.print(content);
         }
+        
+        public String print1() {
+        	printer.print(content);
+        	return "su";
+        }
     }
 
     /**
@@ -60,6 +68,7 @@ public class BasicClassMockTest extends EasyMockSupport {
      */
     public static abstract class Printer {
         public abstract void print(String toPrint);
+        public abstract String print1(String toPrint);
     }
 
     private Printer printer;
@@ -91,6 +100,19 @@ public class BasicClassMockTest extends EasyMockSupport {
 
     @Test
     public void testPrintEmptyContent() {
+    	Printer mockPrinter = EasyMock.createMock(Printer.class);
+        expect(mockPrinter.print("")).andReturn("haha");
+        replayAll();
+
+        document.setContent("");
+        document.print();
+
+        verifyAll(); // make sure Printer.print was called
+    }
+    
+    public void testPrint1() {
+    	Printer mockPrinter = EasyMock.createMock(Printer.class);
+    	expect(mockPrinter.print1("hehe")).andReturn("haha");
         printer.print("");
         replayAll();
 
