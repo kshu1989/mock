@@ -19,6 +19,7 @@ package org.easymock.samples;
 import static org.easymock.EasyMock.*;
 import static org.junit.Assert.*;
 
+import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.junit.After;
 import org.junit.Before;
@@ -77,5 +78,16 @@ public class PartialClassMockTest extends EasyMockSupport {
         replayAll();
         assertEquals(20, rect.getArea());
         verifyAll();
+    }
+    
+    @Test
+    public void testMy1() {
+    	Rect rect = EasyMock.createMock(Rect.class);
+    	expect(rect.getX()).andReturn(2);
+    	expect(rect.getY()).andReturn(13);
+//    	replayAll();
+    	
+    	EasyMock.replay(rect);
+    	System.out.println(rect.getArea());
     }
 }
